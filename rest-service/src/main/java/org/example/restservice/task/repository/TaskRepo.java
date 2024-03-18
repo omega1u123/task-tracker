@@ -1,0 +1,9 @@
+package org.example.restservice.task.repository;
+
+import org.example.restservice.task.model.TaskEntity;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface TaskRepo extends CrudRepository<TaskEntity, Integer> {
+}
