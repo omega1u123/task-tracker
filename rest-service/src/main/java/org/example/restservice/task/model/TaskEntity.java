@@ -25,7 +25,7 @@ public class TaskEntity {
     @Column(name = "c_description")
     private String description;
 
-    @Column(name = "c_is_competed")
+    @Column(name = "c_is_completed")
     private Boolean isCompleted;
 
     @Column(name = "c_modified")

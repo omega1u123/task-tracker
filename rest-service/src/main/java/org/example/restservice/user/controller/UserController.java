@@ -34,4 +34,14 @@ public class UserController {
         }
     }
 
+    @GetMapping("{userId:\\d+}/tasks")
+    public ResponseEntity<?> getUserTasks(@PathVariable("userId") int userId){
+        try {
+            return ResponseEntity.ok(userService.getAllTasks(userId));
+        }catch (RuntimeException ex){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("oops");
+        }
+    }
+
+
 }
