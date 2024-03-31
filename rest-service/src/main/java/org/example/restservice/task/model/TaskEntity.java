@@ -34,4 +34,14 @@ public class TaskEntity {
     @ManyToOne
     @JoinColumn(name = "c_user_id")
     private UserEntity userEntity;
+
+    public TaskEntity(String title, String description, Boolean isCompleted, Timestamp modified, UserEntity userEntity) {
+        this.title = title;
+        this.description = description;
+        this.isCompleted = isCompleted;
+        this.modified = modified;
+        this.userEntity = userEntity;
+    }
+
+
 }
