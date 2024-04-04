@@ -9,6 +9,7 @@ import org.example.restservice.task.model.dto.TaskDTO;
 import org.example.restservice.task.service.TaskService;
 import org.example.restservice.user.exception.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -58,6 +59,16 @@ public class TaskController {
             return ResponseEntity.ok().build();
         }catch (TaskNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("task not found");
+        }
+    }
+
+    @DeleteMapping("{taskId:\\d+}/deleteTask")
+    public ResponseEntity<?> deleteTask(@PathVariable("taskId") int taskId){
+        try{
+            taskService.deleteTask(taskId);
+            return ResponseEntity.ok().body("task deleted");
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("smt went wrong...");
         }
     }
 

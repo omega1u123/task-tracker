@@ -58,4 +58,10 @@ public class TaskServiceImpl implements TaskService{
         taskEntity.setModified(Timestamp.valueOf(LocalDateTime.now()));
 
     }
+
+    @Override
+    @Transactional
+    public void deleteTask(int taskId) {
+        taskRepo.deleteById(taskId);
+    }
 }

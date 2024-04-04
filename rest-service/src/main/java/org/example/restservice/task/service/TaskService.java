@@ -13,4 +13,6 @@ public interface TaskService {
 
     void editTask(int taskId, EditTaskRequest task);
 
+    void deleteTask(int taskId);
+
 }
