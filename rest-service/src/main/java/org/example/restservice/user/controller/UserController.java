@@ -15,6 +15,7 @@ public class UserController {
 
     private final UserService userService;
 
+
     @GetMapping("{userId:\\d+}")
     public ResponseEntity<?> getUser(@PathVariable("userId") int id){
         try{
