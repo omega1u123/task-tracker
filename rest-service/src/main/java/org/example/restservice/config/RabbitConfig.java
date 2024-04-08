@@ -8,17 +8,17 @@ import org.springframework.context.annotation.Configuration;
 public class RabbitConfig {
 
     private final String exchangeName = "taskExchange";
-    private final String queueName = "emailQueue";
+    private final String queueName = "newUserEmailQueue";
 
     @Bean
     public Queue myQueue(){return new Queue(queueName, false);}
 
     @Bean
-    public Exchange myExchange(){return new FanoutExchange(exchangeName, false, false);}
+    public Exchange myExchange(){return new DirectExchange(exchangeName, false, false);}
 
     @Bean
     public Binding myBinding(Queue queue, Exchange exchange){
-        return BindingBuilder.bind(queue).to(exchange).with("all.key").noargs();
+        return BindingBuilder.bind(queue).to(exchange).with("new-user").noargs();
     }
 
 }

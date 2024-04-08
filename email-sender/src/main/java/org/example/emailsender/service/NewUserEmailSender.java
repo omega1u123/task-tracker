@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class NewUserEmailSender {
 
-    @RabbitListener(queues = "emailQueue")
+    @RabbitListener(queues = "newUserEmailQueue")
     public void newUserEmail(String message){
         System.out.println(message);
     }

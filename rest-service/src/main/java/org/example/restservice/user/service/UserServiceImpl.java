@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService{
         userEntity.setEmail(user.getEmail());
         userEntity.setPassword(user.getPassword());
         userRepo.save(userEntity);
-        rabbitTemplate.convertAndSend("taskExchange", "all.key", user.getEmail());
+        rabbitTemplate.convertAndSend("taskExchange", "new-user", user.getEmail());
     }
 
     @Override
