@@ -1,0 +1,45 @@
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+   <changeSet id="v1-2" author="omegalul">
+
+       <preConditions onFail="MARK_RAN">
+           <not>
+               <tableExists tableName="t_task"/>
+           </not>
+       </preConditions>
+
+       <createTable tableName="t_task">
+
+           <column name="id" type="bigint" autoIncrement="true">
+               <constraints primaryKey="true"/>
+           </column>
+
+           <column name="c_title" type="varchar">
+               <constraints nullable="false"/>
+           </column>
+
+           <column name="c_description" type="varchar">
+
+           </column>
+
+           <column name="c_is_completed" type="boolean">
+               <constraints nullable="false"/>
+           </column>
+
+           <column name="c_modified" type="java.sql.types.timestamp_with_timezone">
+               <constraints nullable="false"/>
+           </column>
+
+           <column name="c_user_id" type="bigint">
+               <constraints foreignKeyName="c_user_id"
+                            referencedTableName="t_user"
+                            referencedColumnNames="id"/>
+           </column>
+
+       </createTable>
+   </changeSet>
+
+</databaseChangeLog>

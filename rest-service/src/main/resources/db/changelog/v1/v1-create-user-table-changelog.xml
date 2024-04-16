@@ -1,0 +1,32 @@
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+   <changeSet id="v1-1" author="omegalul">
+
+       <preConditions onFail="MARK_RAN">
+           <not>
+               <tableExists tableName="t_user"/>
+           </not>
+       </preConditions>
+
+       <createTable tableName="t_user">
+
+           <column name="id" type="bigint" autoIncrement="true">
+               <constraints primaryKey="true"/>
+           </column>
+
+           <column name="c_email" type="varchar">
+               <constraints nullable="false"/>
+           </column>
+
+           <column name="c_password" type="varchar">
+               <constraints nullable="false"/>
+           </column>
+
+       </createTable>
+   </changeSet>
+
+
+</databaseChangeLog>
