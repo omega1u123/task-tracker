@@ -25,8 +25,11 @@ public class TaskEntity {
     @Column(name = "c_description")
     private String description;
 
-    @Column(name = "c_is_completed")
-    private Boolean isCompleted;
+    /*@Column(name = "c_is_completed")
+    private Boolean isCompleted;*/
+
+    @Column(name = "c_status")
+    private String status;
 
     @Column(name = "c_modified")
     private Timestamp modified;
@@ -35,10 +38,10 @@ public class TaskEntity {
     @JoinColumn(name = "c_user_id")
     private UserEntity userEntity;
 
-    public TaskEntity(String title, String description, Boolean isCompleted, Timestamp modified, UserEntity userEntity) {
+    public TaskEntity(String title, String description, String status, Timestamp modified, UserEntity userEntity) {
         this.title = title;
         this.description = description;
-        this.isCompleted = isCompleted;
+        this.status = status;
         this.modified = modified;
         this.userEntity = userEntity;
     }

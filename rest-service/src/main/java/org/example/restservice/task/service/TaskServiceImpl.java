@@ -28,7 +28,8 @@ public class TaskServiceImpl implements TaskService{
     public void createTask(TaskDTO task, int userId) {
         TaskEntity taskEntity = new TaskEntity(
                 task.getTitle(),
-                task.getDescription(), task.getIsCompleted(),
+                task.getDescription(),
+                task.getStatus(),
                 Timestamp.valueOf(LocalDateTime.now()),
                 userRepo.findById(userId).orElseThrow(EntityNotFoundException::new)
         );
@@ -42,9 +43,27 @@ public class TaskServiceImpl implements TaskService{
 
     @Override
     @Transactional
-    public void completeTask(int taskId) {
+    public void changeStatusToCompleted(int taskId) {
         TaskEntity task = taskRepo.findById(taskId).orElseThrow(TaskNotFoundException::new);
-        task.setIsCompleted(true);
+        task.setStatus("completed");
+        task.setModified(Timestamp.valueOf(LocalDateTime.now()));
+        taskRepo.save(task);
+    }
+
+    @Override
+    @Transactional
+    public void changeStatusToToDo(int taskId) {
+        TaskEntity task = taskRepo.findById(taskId).orElseThrow(TaskNotFoundException::new);
+        task.setStatus("to do");
+        task.setModified(Timestamp.valueOf(LocalDateTime.now()));
+        taskRepo.save(task);
+    }
+
+    @Override
+    @Transactional
+    public void changeStatusToInProgress(int taskId) {
+        TaskEntity task = taskRepo.findById(taskId).orElseThrow(TaskNotFoundException::new);
+        task.setStatus("in progress");
         task.setModified(Timestamp.valueOf(LocalDateTime.now()));
         taskRepo.save(task);
     }

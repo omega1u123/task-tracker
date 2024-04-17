@@ -34,17 +34,37 @@ public class TaskController {
     public ResponseEntity<?> createTask(@RequestBody NewTaskRequest task){
         try {
             log.info("task form request : {}", task.toString());
-            taskService.createTask(new TaskDTO(task.getTitle(), task.getDescription(), false), task.getUserId());
+            taskService.createTask(new TaskDTO(task.getTitle(), task.getDescription(), task.getStatus()), task.getUserId());
             return ResponseEntity.ok("task created");
         }catch (EntityNotFoundException ex){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 
-    @PatchMapping("{taskId:\\d+}/completeTask")
-    public ResponseEntity<?> completeTask(@PathVariable("taskId") int taskId){
+    @PatchMapping("{taskId:\\d+}/changeStatusToCompleted")
+    public ResponseEntity<?> changeStatusToCompleted(@PathVariable("taskId") int taskId){
         try{
-            taskService.completeTask(taskId);
+            taskService.changeStatusToCompleted(taskId);
+            return ResponseEntity.ok().build();
+        }catch (TaskNotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("task not found");
+        }
+    }
+
+    @PatchMapping("{taskId:\\d+}/changeStatusToToDo")
+    public ResponseEntity<?> changeStatusToToDo(@PathVariable("taskId") int taskId){
+        try{
+            taskService.changeStatusToToDo(taskId);
+            return ResponseEntity.ok().build();
+        }catch (TaskNotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("task not found");
+        }
+    }
+
+    @PatchMapping("{taskId:\\d+}/changeStatusToInProgress")
+    public ResponseEntity<?> changeStatusToInProgress(@PathVariable("taskId") int taskId){
+        try{
+            taskService.changeStatusToInProgress(taskId);
             return ResponseEntity.ok().build();
         }catch (TaskNotFoundException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("task not found");

@@ -9,6 +9,8 @@ public class NewTaskRequest {
 
     private String description;
 
+    private String status;
+
     private int userId;
 
 }

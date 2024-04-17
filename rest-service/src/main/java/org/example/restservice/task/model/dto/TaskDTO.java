@@ -16,23 +16,20 @@ public class TaskDTO {
 
     private String description;
 
-    private boolean isCompleted;
+    private String status;
 
     private Timestamp modified;
 
-    public TaskDTO(String title, String description, boolean isCompleted) {
+    public TaskDTO(String title, String description, String status) {
         this.title = title;
         this.description = description;
-        this.isCompleted = isCompleted;
+        this.status = status;
     }
 
     public static TaskDTO mapTaskToDTO(TaskEntity taskEntity){
-        return new TaskDTO(taskEntity.getId(), taskEntity.getTitle(), taskEntity.getDescription(), taskEntity.getIsCompleted(), taskEntity.getModified());
+        return new TaskDTO(taskEntity.getId(), taskEntity.getTitle(), taskEntity.getDescription(), taskEntity.getStatus(), taskEntity.getModified());
     }
 
-    public boolean getIsCompleted(){
-        return this.isCompleted;
-    }
 
 
 }
