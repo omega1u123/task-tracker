@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.restservice.task.exception.TaskNotFoundException;
 import org.example.restservice.task.model.TaskEntity;
-import org.example.restservice.task.model.dto.EditTaskRequest;
+import org.example.restservice.task.controller.payload.EditTaskRequest;
 import org.example.restservice.task.model.dto.TaskDTO;
 import org.example.restservice.task.repository.TaskRepo;
 import org.example.restservice.user.exception.EntityNotFoundException;

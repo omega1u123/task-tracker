@@ -1,6 +1,6 @@
 package org.example.restservice.task.service;
 
-import org.example.restservice.task.model.dto.EditTaskRequest;
+import org.example.restservice.task.controller.payload.EditTaskRequest;
 import org.example.restservice.task.model.dto.TaskDTO;
 
 public interface TaskService {

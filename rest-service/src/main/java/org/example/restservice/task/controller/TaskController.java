@@ -3,13 +3,12 @@ package org.example.restservice.task.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.restservice.task.exception.TaskNotFoundException;
-import org.example.restservice.task.model.dto.EditTaskRequest;
-import org.example.restservice.task.model.dto.NewTaskRequest;
+import org.example.restservice.task.controller.payload.EditTaskRequest;
+import org.example.restservice.task.controller.payload.NewTaskRequest;
 import org.example.restservice.task.model.dto.TaskDTO;
 import org.example.restservice.task.service.TaskService;
 import org.example.restservice.user.exception.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

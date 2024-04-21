@@ -1,4 +1,4 @@
-package org.example.restservice.user.model.dto;
+package org.example.restservice.auth.payload;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

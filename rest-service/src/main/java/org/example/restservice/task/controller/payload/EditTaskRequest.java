@@ -1,4 +1,4 @@
-package org.example.restservice.task.model.dto;
+package org.example.restservice.task.controller.payload;
 
 import lombok.Data;
 
