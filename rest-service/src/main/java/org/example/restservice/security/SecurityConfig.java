@@ -31,7 +31,6 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
                 .authorizeRequests(auth -> auth
-                        .requestMatchers("/auth/refreshAccessToken").permitAll()
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/task/**").authenticated()
                         .requestMatchers("/user/**").authenticated()

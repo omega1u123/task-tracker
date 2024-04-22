@@ -4,15 +4,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.restservice.auth.payload.JwtRequest;
 import org.example.restservice.auth.payload.RefreshJwtRequest;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.example.restservice.user.model.dto.UserDTO;
+import org.example.restservice.user.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("auth")
@@ -21,8 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final AuthService authService;
+    private final UserService userService;
 
-    @GetMapping
+    @GetMapping("/signIn")
     public ResponseEntity<?> authenticate(@RequestBody JwtRequest jwtRequest){
         try{
             var response = authService.authenticate(jwtRequest);
@@ -43,6 +41,16 @@ public class AuthController {
         }
     }
 
+    @PostMapping("/signUp")
+    public ResponseEntity<?> signUp(@RequestBody UserDTO user){
+        try{
+            userService.createUser(user);
+            var response = authService.authenticate(new JwtRequest(user.getEmail(), user.getPassword()));
+            return ResponseEntity.ok(response);
+        }catch (RuntimeException ex){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("creating user failed");
+        }
+    }
 
 
 }

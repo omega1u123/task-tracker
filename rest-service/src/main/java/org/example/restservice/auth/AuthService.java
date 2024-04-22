@@ -8,6 +8,7 @@ import org.example.restservice.auth.payload.RefreshJwtRequest;
 import org.example.restservice.security.UserDetailsServiceImpl;
 import org.example.restservice.auth.payload.JwtRequest;
 import org.example.restservice.auth.payload.JwtResponse;
+import org.example.restservice.user.model.dto.UserDTO;
 import org.example.restservice.user.repository.UserRepo;
 import org.example.restservice.user.util.JwtUtil;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -66,5 +67,6 @@ public class AuthService {
         refreshTokenStorage.put(userDetails.getUsername(), refreshToken);
         return new JwtResponse(refreshToken, jwtUtil.generateAccessToken(userDetails));
     }
+
 
 }
