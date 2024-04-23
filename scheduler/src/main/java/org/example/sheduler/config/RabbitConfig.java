@@ -1,4 +1,4 @@
-package org.example.restservice.config;
+package org.example.sheduler.config;
 
 import org.springframework.amqp.core.*;
 import org.springframework.context.annotation.Bean;
@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 public class RabbitConfig {
 
     private final String exchangeName = "taskExchange";
-    private final String queueName = "newUserEmailQueue";
+    private final String queueName = "dailyReportQueue";
 
     @Bean
     public Queue myQueue(){return new Queue(queueName, false);}
@@ -20,7 +20,7 @@ public class RabbitConfig {
 
     @Bean
     public Binding myBinding(Queue queue, Exchange exchange){
-        return BindingBuilder.bind(queue).to(exchange).with("new-user").noargs();
+        return BindingBuilder.bind(queue).to(exchange).with("daily-report").noargs();
     }
 
 }
