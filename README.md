@@ -1,4 +1,4 @@
-# TaskTracker
+# Task tracker
 
 Multi-user task scheduler. Users can utilize it as a TODO list. The project is inspired by Trello.
 
