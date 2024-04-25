@@ -1,0 +1,50 @@
+version: '3'
+
+services:
+  postgres:
+    image: 'postgres:14'
+    container_name: 'tt-postgres'
+    ports:
+      - '5434:5432'
+    environment:
+      - 'POSTGRES_USER=omegalul'
+      - 'POSTGRES_PASSWORD=newpassword'
+      - 'POSTGRES_DB=task-tracker-db'
+
+  rabbitMQ:
+    image: 'rabbitmq:3.13-management'
+    container_name: "tt-rabbitmq"
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+
+  tt-email-sender:
+    image: 'omegalul123/tt-email-sender'
+    links:
+      - rabbitMQ
+    environment:
+      - 'SPRING_RABBITMQ_HOST=rabbitMQ'
+
+  tt-scheduler:
+    image: 'omegalul123/tt-scheduler'
+    links:
+      - rabbitMQ
+      - postgres
+    environment:
+      - 'SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/task-tracker-db'
+      - 'SPRING_RABBITMQ_HOST=rabbitMQ'
+
+
+  app:
+    build: ./
+    container_name: 'rest-service'
+    environment:
+      - 'SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/task-tracker-db'
+      - 'SPRING_RABBITMQ_HOST=rabbitMQ'
+    ports:
+      - '8080:8080'
+    depends_on:
+      - postgres
+      - rabbitMQ
+      - tt-email-sender
+      - tt-scheduler

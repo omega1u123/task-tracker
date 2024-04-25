@@ -32,7 +32,7 @@ public class JwtUtil {
 
     public String generateAccessToken(@NonNull UserDetails user){
         final LocalDateTime now = LocalDateTime.now();
-        final Instant accessExpirationInstant = now.plusMinutes(1).atZone(ZoneId.systemDefault()).toInstant();
+        final Instant accessExpirationInstant = now.plusDays(1).atZone(ZoneId.systemDefault()).toInstant();
         final Date accessExpiration = Date.from(accessExpirationInstant);
         return Jwts.builder()
                 .subject(user.getUsername())
@@ -45,7 +45,7 @@ public class JwtUtil {
 
     public String generateRefreshToken(@NonNull UserDetails user){
         final LocalDateTime now = LocalDateTime.now();
-        final Instant refreshExpirationInstant = now.plusMinutes(5).atZone(ZoneId.systemDefault()).toInstant();
+        final Instant refreshExpirationInstant = now.plusDays(10).atZone(ZoneId.systemDefault()).toInstant();
         final Date refreshExpiration = Date.from(refreshExpirationInstant);
         return Jwts.builder()
                 .subject(user.getUsername())
