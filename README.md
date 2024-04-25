@@ -15,7 +15,7 @@ Multi-user task scheduler. Users can utilize it as a TODO list. The project is i
 
 Spring Boot (Java) application implementing a REST API for user management, sessions created upon authorization, and tasks.
 
-REST-SERVICE:
+#### REST-SERVICE:
 
 User:
 - Registration
@@ -29,10 +29,10 @@ Task:
 
 Upon user registration, the service sends a message to RabbitMQ with the user's email address.
 
-EMAIL-SENDER:
+#### EMAIL-SENDER:
 
 Upon receiving messages from RabbitMQ, it sends an email to the users' email addresses.
 
-SCHEDULER: 
+#### SCHEDULER: 
 
 Every day at 00:00, it sends messages to RabbitMQ with a report on users' completed tasks.
