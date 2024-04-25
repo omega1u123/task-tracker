@@ -7,7 +7,7 @@ Multi-user task scheduler. Users can utilize it as a TODO list. The project is i
 - Java
 - Maven
 - Spring Boot, Spring Security, Spring AMQP, Spring Scheduler, Spring Mail
-- PostgreSQL, Spring Data JPA
+- PostgreSQL, Spring Data JPA, Hibernate
 - Docker 
 - RabbitMQ
 
