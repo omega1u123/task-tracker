@@ -1,11 +1,12 @@
 package org.example.restservice.task.service;
 
 import org.example.restservice.task.controller.payload.EditTaskRequest;
+import org.example.restservice.task.model.dto.CreateTaskModel;
 import org.example.restservice.task.model.dto.TaskDTO;
 
 public interface TaskService {
 
-    void createTask(TaskDTO task, int userId);
+    void createTask(CreateTaskModel task, int boardId, String username);
     TaskDTO getTask(int taskId);
     void changeStatusToCompleted(int taskId);
     void changeStatusToToDo(int taskId);

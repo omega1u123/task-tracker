@@ -5,10 +5,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.restservice.task.exception.TaskNotFoundException;
 import org.example.restservice.task.model.TaskEntity;
 import org.example.restservice.task.controller.payload.EditTaskRequest;
+import org.example.restservice.task.model.dto.CreateTaskModel;
 import org.example.restservice.task.model.dto.TaskDTO;
+import org.example.restservice.board.repository.BoardRepo;
 import org.example.restservice.task.repository.TaskRepo;
 import org.example.restservice.user.exception.EntityNotFoundException;
-import org.example.restservice.user.repository.UserRepo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,17 +22,17 @@ import java.time.LocalDateTime;
 public class TaskServiceImpl implements TaskService{
 
     private final TaskRepo taskRepo;
-    private final UserRepo userRepo;
+    private final BoardRepo boardRepo;
 
     @Override
-    @Transactional
-    public void createTask(TaskDTO task, int userId) {
+    public void createTask(CreateTaskModel task, int boardId, String username) {
         TaskEntity taskEntity = new TaskEntity(
                 task.getTitle(),
                 task.getDescription(),
                 task.getStatus(),
                 Timestamp.valueOf(LocalDateTime.now()),
-                userRepo.findById(userId).orElseThrow(EntityNotFoundException::new)
+
+                boardRepo.findById(boardId).orElseThrow(EntityNotFoundException::new)
         );
         taskRepo.save(taskEntity);
     }
@@ -46,7 +47,7 @@ public class TaskServiceImpl implements TaskService{
     public void changeStatusToCompleted(int taskId) {
         TaskEntity task = taskRepo.findById(taskId).orElseThrow(TaskNotFoundException::new);
         task.setStatus("completed");
-        task.setModified(Timestamp.valueOf(LocalDateTime.now()));
+        task.setModifiedAt(Timestamp.valueOf(LocalDateTime.now()));
         taskRepo.save(task);
     }
 
@@ -55,7 +56,7 @@ public class TaskServiceImpl implements TaskService{
     public void changeStatusToToDo(int taskId) {
         TaskEntity task = taskRepo.findById(taskId).orElseThrow(TaskNotFoundException::new);
         task.setStatus("to do");
-        task.setModified(Timestamp.valueOf(LocalDateTime.now()));
+        task.setModifiedAt(Timestamp.valueOf(LocalDateTime.now()));
         taskRepo.save(task);
     }
 
@@ -64,7 +65,7 @@ public class TaskServiceImpl implements TaskService{
     public void changeStatusToInProgress(int taskId) {
         TaskEntity task = taskRepo.findById(taskId).orElseThrow(TaskNotFoundException::new);
         task.setStatus("in progress");
-        task.setModified(Timestamp.valueOf(LocalDateTime.now()));
+        task.setModifiedAt(Timestamp.valueOf(LocalDateTime.now()));
         taskRepo.save(task);
     }
 
@@ -74,7 +75,7 @@ public class TaskServiceImpl implements TaskService{
         TaskEntity taskEntity = taskRepo.findById(taskId).orElseThrow(TaskNotFoundException::new);
         taskEntity.setTitle(task.getTitle());
         taskEntity.setDescription(task.getDescription());
-        taskEntity.setModified(Timestamp.valueOf(LocalDateTime.now()));
+        taskEntity.setModifiedAt(Timestamp.valueOf(LocalDateTime.now()));
 
     }
 

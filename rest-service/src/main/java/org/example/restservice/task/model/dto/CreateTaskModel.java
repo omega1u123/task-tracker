@@ -1,9 +1,13 @@
-package org.example.restservice.task.controller.payload;
+package org.example.restservice.task.model.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
+
+
 @Data
-public class NewTaskRequest {
+@AllArgsConstructor
+public class CreateTaskModel {
 
     private String title;
 
@@ -12,7 +16,4 @@ public class NewTaskRequest {
     private String status;
 
     private int boardId;
-
-    private String username;
-
 }

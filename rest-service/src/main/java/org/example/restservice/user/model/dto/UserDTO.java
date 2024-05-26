@@ -9,10 +9,10 @@ import org.example.restservice.user.model.UserEntity;
 public class UserDTO {
 
     public String email;
-    public String password;
+    public String username;
 
     public static UserDTO mapUserToDTO(UserEntity userEntity){
-        return new UserDTO(userEntity.getEmail(), userEntity.getPassword());
+        return new UserDTO(userEntity.getEmail(), userEntity.getUsername());
     }
 
 }

@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.restservice.task.exception.TaskNotFoundException;
 import org.example.restservice.task.controller.payload.EditTaskRequest;
 import org.example.restservice.task.controller.payload.NewTaskRequest;
-import org.example.restservice.task.model.dto.TaskDTO;
+import org.example.restservice.task.model.dto.CreateTaskModel;
 import org.example.restservice.task.service.TaskService;
 import org.example.restservice.user.exception.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -33,7 +33,7 @@ public class TaskController {
     public ResponseEntity<?> createTask(@RequestBody NewTaskRequest task){
         try {
             log.info("task form request : {}", task.toString());
-            taskService.createTask(new TaskDTO(task.getTitle(), task.getDescription(), task.getStatus()), task.getUserId());
+            taskService.createTask(new CreateTaskModel(task.getTitle(), task.getDescription(), task.getStatus(), task.getBoardId()), task.getBoardId(), task.getUsername());
             return ResponseEntity.ok("task created");
         }catch (EntityNotFoundException ex){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();

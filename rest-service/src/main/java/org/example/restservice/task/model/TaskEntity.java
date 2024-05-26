@@ -1,10 +1,11 @@
 package org.example.restservice.task.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.example.restservice.user.model.UserEntity;
+import org.example.restservice.board.model.BoardEntity;
 
 import java.sql.Timestamp;
 
@@ -20,31 +21,41 @@ public class TaskEntity {
     private Integer id;
 
     @Column(name = "c_title")
+    @NotNull
     private String title;
 
     @Column(name = "c_description")
     private String description;
 
-    /*@Column(name = "c_is_completed")
-    private Boolean isCompleted;*/
-
     @Column(name = "c_status")
+    @NotNull
     private String status;
 
-    @Column(name = "c_modified")
-    private Timestamp modified;
+    @Column(name = "c_modified_at")
+    @NotNull
+    private Timestamp modifiedAt;
+
+    @Column(name = "c_modified_by")
+    @NotNull
+    private String modifiedBy;
 
     @ManyToOne
-    @JoinColumn(name = "c_user_id")
-    private UserEntity userEntity;
+    @JoinColumn(name = "c_board_id")
+    @NotNull
+    private BoardEntity boardEntity;
 
-    public TaskEntity(String title, String description, String status, Timestamp modified, UserEntity userEntity) {
+    public TaskEntity(String title, String description, String status, Timestamp modified, BoardEntity boardEntity) {
         this.title = title;
         this.description = description;
         this.status = status;
-        this.modified = modified;
-        this.userEntity = userEntity;
+        this.modifiedAt = modified;
+        this.boardEntity = boardEntity;
     }
 
-
+    public TaskEntity(String title, String description, String status, BoardEntity boardEntity) {
+        this.title = title;
+        this.description = description;
+        this.status = status;
+        this.boardEntity = boardEntity;
+    }
 }

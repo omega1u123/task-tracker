@@ -18,18 +18,20 @@ public class TaskDTO {
 
     private String status;
 
-    private Timestamp modified;
+    private Timestamp modifiedAt;
 
-    public TaskDTO(String title, String description, String status) {
-        this.title = title;
-        this.description = description;
-        this.status = status;
-    }
+    private String modifiedBy;
+
 
     public static TaskDTO mapTaskToDTO(TaskEntity taskEntity){
-        return new TaskDTO(taskEntity.getId(), taskEntity.getTitle(), taskEntity.getDescription(), taskEntity.getStatus(), taskEntity.getModified());
+        return new TaskDTO(
+                taskEntity.getId(),
+                taskEntity.getTitle(),
+                taskEntity.getDescription(),
+                taskEntity.getStatus(),
+                taskEntity.getModifiedAt(),
+                taskEntity.getModifiedBy()
+                );
     }
-
-
 
 }

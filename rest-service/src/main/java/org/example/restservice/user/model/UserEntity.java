@@ -23,5 +23,8 @@ public class UserEntity {
     @NotNull
     private String password;
 
+    @Column(name = "c_username")
+    @NotNull
+    private String username;
 
 }
