@@ -1,7 +1,9 @@
 package org.example.restservice.user.controller;
 
 import lombok.AllArgsConstructor;
+import org.example.restservice.user.controller.payload.NewUserRequest;
 import org.example.restservice.user.exception.EntityNotFoundException;
+import org.example.restservice.user.model.UserEntity;
 import org.example.restservice.user.model.dto.UserDTO;
 import org.example.restservice.user.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -26,9 +28,9 @@ public class UserController {
     }
 
     @PostMapping("create")
-    public ResponseEntity<?> createUser(@RequestBody UserDTO user){
+    public ResponseEntity<?> createUser(@RequestBody NewUserRequest user){
         try{
-            userService.createUser(user);
+            userService.createUser(new UserEntity(user.getEmail(), user.getPassword(), user.getUsername()));
             return ResponseEntity.ok().build();
         }catch (Exception exc){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("this email is already registered");
@@ -36,9 +38,9 @@ public class UserController {
     }
 
     @GetMapping("{userId:\\d+}/tasks")
-    public ResponseEntity<?> getUserTasks(@PathVariable("userId") int userId){
+    public ResponseEntity<?> getBoards(@PathVariable("userId") int userId){
         try {
-            return ResponseEntity.ok(userService.getAllTasks(userId));
+            return ResponseEntity.ok(userService.getAllBoards(userId));
         }catch (RuntimeException ex){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("oops");
         }

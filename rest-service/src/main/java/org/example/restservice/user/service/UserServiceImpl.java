@@ -1,6 +1,9 @@
 package org.example.restservice.user.service;
 
 import lombok.AllArgsConstructor;
+import org.example.restservice.board.model.dto.BoardDTO;
+import org.example.restservice.board.repository.BoardRepo;
+import org.example.restservice.board.service.BoardService;
 import org.example.restservice.task.model.dto.TaskDTO;
 import org.example.restservice.task.repository.TaskRepo;
 import org.example.restservice.user.exception.EntityNotFoundException;
@@ -18,7 +21,8 @@ import java.util.List;
 public class UserServiceImpl implements UserService{
 
     private final UserRepo userRepo;
-    private final TaskRepo taskRepo;
+    private final BoardRepo boardRepo;
+    private final BoardService boardService;
     private final RabbitTemplate rabbitTemplate;
 
     @Override
@@ -28,11 +32,8 @@ public class UserServiceImpl implements UserService{
 
     @Override
     @Transactional
-    public void createUser(UserDTO user) {
-        UserEntity userEntity = new UserEntity();
-        userEntity.setEmail(user.getEmail());
-        userEntity.setPassword(user.getPassword());
-        userRepo.save(userEntity);
+    public void createUser(UserEntity user) {
+        userRepo.save(user);
         rabbitTemplate.convertAndSend("taskExchange", "new-user", user.getEmail());
     }
 
@@ -43,10 +44,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     @Transactional
-    public List<TaskDTO> getAllTasks(int userId) {
-        return taskRepo.findAllByUserEntity(userRepo.findById(userId).orElseThrow())
-                .stream()
-                .map(TaskDTO::mapTaskToDTO)
-                .toList();
+    public List<BoardDTO> getAllBoards(int userId) {
+        return boardService.getBoardsByUserId(userId);
     }
 }

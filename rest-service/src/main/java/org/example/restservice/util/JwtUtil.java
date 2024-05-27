@@ -1,4 +1,4 @@
-package org.example.restservice.user.util;
+package org.example.restservice.util;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

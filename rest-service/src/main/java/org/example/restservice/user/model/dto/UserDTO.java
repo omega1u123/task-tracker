@@ -8,11 +8,12 @@ import org.example.restservice.user.model.UserEntity;
 @AllArgsConstructor
 public class UserDTO {
 
+    public Integer id;
     public String email;
     public String username;
 
     public static UserDTO mapUserToDTO(UserEntity userEntity){
-        return new UserDTO(userEntity.getEmail(), userEntity.getUsername());
+        return new UserDTO(userEntity.getId(),userEntity.getEmail(), userEntity.getUsername());
     }
 
 }

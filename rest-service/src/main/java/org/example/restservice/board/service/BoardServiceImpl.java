@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -37,6 +38,11 @@ public class BoardServiceImpl implements BoardService{
     @Override
     public BoardDTO getBoard(int boardId) {
         return BoardDTO.mapEntityToDTO(boardRepo.findById(boardId).orElseThrow(EntityNotFoundException::new));
+    }
+
+    @Override
+    public List<BoardDTO> getBoardsByUserId(int userId) {
+        return List.of(BoardDTO.mapEntityToDTO(boardRepo.findBoardEntitiesByUsers(userRepo.findUserEntityById(userId)).iterator().next()));
     }
 
 

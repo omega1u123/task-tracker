@@ -1,0 +1,33 @@
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="v1-4" author="omegalul">
+
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="t_user-board"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="t_board_users">
+            <column name="c_board_id" type="INT">
+                <constraints nullable="false"
+                             foreignKeyName="c_board_id"
+                             referencedTableName="t_board"
+                             referencedColumnNames="id"
+                />
+            </column>
+            <column name="c_user_id" type="INT">
+                <constraints nullable="false"
+                             foreignKeyName="c_user_id"
+                             referencedTableName="t_user"
+                             referencedColumnNames="id"
+                />
+            </column>
+        </createTable>
+
+    </changeSet>
+
+</databaseChangeLog>

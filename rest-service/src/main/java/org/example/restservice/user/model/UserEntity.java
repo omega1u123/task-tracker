@@ -27,4 +27,10 @@ public class UserEntity {
     @NotNull
     private String username;
 
+
+    public UserEntity(String email, String password, String username) {
+        this.email = email;
+        this.password = password;
+        this.username = username;
+    }
 }

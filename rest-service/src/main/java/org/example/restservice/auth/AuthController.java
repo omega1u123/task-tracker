@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.restservice.auth.payload.JwtRequest;
 import org.example.restservice.auth.payload.RefreshJwtRequest;
+import org.example.restservice.user.controller.payload.NewUserRequest;
+import org.example.restservice.user.model.UserEntity;
 import org.example.restservice.user.model.dto.UserDTO;
 import org.example.restservice.user.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -42,9 +44,9 @@ public class AuthController {
     }
 
     @PostMapping("/signUp")
-    public ResponseEntity<?> signUp(@RequestBody UserDTO user){
+    public ResponseEntity<?> signUp(@RequestBody NewUserRequest user){
         try{
-            userService.createUser(user);
+            userService.createUser(new UserEntity(user.getEmail(), user.getPassword(), user.getUsername()));
             var response = authService.authenticate(new JwtRequest(user.getEmail(), user.getPassword()));
             return ResponseEntity.ok(response);
         }catch (RuntimeException ex){
