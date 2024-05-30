@@ -10,7 +10,7 @@ import java.util.List;
 public interface UserService {
      UserDTO getUser(int id);
 
-     void createUser(UserEntity user);
+     UserDTO createUser(UserEntity user);
 
      void deleteUser(int id);
 

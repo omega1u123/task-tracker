@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.example.restservice.user.model.UserEntity;
+import org.example.restservice.util.StringListConverter;
+import org.hibernate.annotations.Type;
 
 import java.util.List;
 
@@ -22,8 +24,9 @@ public class BoardEntity {
     @Column(name = "c_title")
     private String title;
 
-    @ElementCollection
+
     @Column(name = "c_statuses")
+    @Convert(converter = StringListConverter.class)
     private List<String> statuses;
 
     @ManyToMany

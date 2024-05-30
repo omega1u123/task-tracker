@@ -10,5 +10,4 @@ public class JwtResponse {
     private final String type = "bearer";
     private String refreshToken;
     private String accessToken;
-
 }

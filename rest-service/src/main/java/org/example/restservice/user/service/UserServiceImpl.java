@@ -32,9 +32,10 @@ public class UserServiceImpl implements UserService{
 
     @Override
     @Transactional
-    public void createUser(UserEntity user) {
+    public UserDTO createUser(UserEntity user) {
         userRepo.save(user);
-        rabbitTemplate.convertAndSend("taskExchange", "new-user", user.getEmail());
+        //rabbitTemplate.convertAndSend("taskExchange", "new-user", user.getEmail());
+        return UserDTO.mapUserToDTO(user);
     }
 
     @Override

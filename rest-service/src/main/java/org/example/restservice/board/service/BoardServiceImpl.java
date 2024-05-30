@@ -1,6 +1,7 @@
 package org.example.restservice.board.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.restservice.board.model.BoardEntity;
 import org.example.restservice.board.model.dto.BoardDTO;
 import org.example.restservice.board.repository.BoardRepo;
@@ -16,6 +17,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class BoardServiceImpl implements BoardService{
 
     private final UserRepo userRepo;
@@ -29,6 +31,8 @@ public class BoardServiceImpl implements BoardService{
                 new ArrayList<>(Arrays.asList("to do", "in process", "completed")),
                 new ArrayList<>(Collections.singletonList(userRepo.findUserEntityById(userId)))
         );
+
+        log.info("created board: {}", board);
 
         boardRepo.save(board);
 

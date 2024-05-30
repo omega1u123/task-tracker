@@ -33,6 +33,7 @@ public class SecurityConfig {
                 .authorizeRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/task/**").authenticated()
+                        .requestMatchers("/board/**").authenticated()
                         .requestMatchers("/user/**").authenticated()
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
