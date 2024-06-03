@@ -10,6 +10,6 @@ import java.util.List;
 @Repository
 public interface TaskRepo extends CrudRepository<TaskEntity, Integer> {
 
-    List<TaskEntity> findAllByBoardEntity(BoardEntity boardEntity);
+    List<TaskEntity> findAllByBoard(BoardEntity boardEntity);
 
 }

@@ -21,7 +21,6 @@ public class BoardController {
         }catch (RuntimeException ex){
             return ResponseEntity.notFound().build();
         }
-
     }
 
     @PostMapping

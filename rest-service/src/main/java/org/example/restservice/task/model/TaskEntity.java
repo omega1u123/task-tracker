@@ -39,23 +39,23 @@ public class TaskEntity {
     @NotNull
     private String modifiedBy;
 
-    @ManyToOne
-    @JoinColumn(name = "c_board_id")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "c_board")
     @NotNull
-    private BoardEntity boardEntity;
+    private BoardEntity board;
 
-    public TaskEntity(String title, String description, String status, Timestamp modified, BoardEntity boardEntity) {
+    public TaskEntity(String title, String description, String status, Timestamp modified, BoardEntity board) {
         this.title = title;
         this.description = description;
         this.status = status;
         this.modifiedAt = modified;
-        this.boardEntity = boardEntity;
+        this.board = board;
     }
 
-    public TaskEntity(String title, String description, String status, BoardEntity boardEntity) {
+    public TaskEntity(String title, String description, String status, BoardEntity board) {
         this.title = title;
         this.description = description;
         this.status = status;
-        this.boardEntity = boardEntity;
+        this.board = board;
     }
 }

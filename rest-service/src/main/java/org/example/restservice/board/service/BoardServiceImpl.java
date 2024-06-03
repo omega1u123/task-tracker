@@ -6,14 +6,12 @@ import org.example.restservice.board.model.BoardEntity;
 import org.example.restservice.board.model.dto.BoardDTO;
 import org.example.restservice.board.repository.BoardRepo;
 import org.example.restservice.user.exception.EntityNotFoundException;
+import org.example.restservice.user.model.UserEntity;
 import org.example.restservice.user.repository.UserRepo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -26,10 +24,12 @@ public class BoardServiceImpl implements BoardService{
     @Override
     public BoardDTO createBoard(String title, int userId) {
 
+        Set<UserEntity> user = Collections.singleton(userRepo.findUserEntityById(userId));
+
         var board = new BoardEntity(
                 title,
                 new ArrayList<>(Arrays.asList("to do", "in process", "completed")),
-                new ArrayList<>(Collections.singletonList(userRepo.findUserEntityById(userId)))
+                user
         );
 
         log.info("created board: {}", board);
@@ -93,6 +93,7 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
+    @Transactional
     public BoardDTO addUserToBoard(int boardId, String username) {
         var board = boardRepo.findById(boardId).orElseThrow(EntityNotFoundException::new);
         board.getUsers().add(userRepo.findUserEntityByUsername(username));
