@@ -6,8 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.example.restservice.board.model.BoardEntity;
+import org.example.restservice.task.model.comment.CommentEntity;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -43,6 +45,9 @@ public class TaskEntity {
     @JoinColumn(name = "c_board")
     @NotNull
     private BoardEntity board;
+
+    @OneToMany(mappedBy = "task")
+    private List<CommentEntity> commentEntityList;
 
     public TaskEntity(String title, String description, String status, Timestamp modified, String modifiedBy,BoardEntity board) {
         this.title = title;
