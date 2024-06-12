@@ -13,7 +13,7 @@ Multi-user task scheduler. Users can utilize it as a TODO list. The project is i
 
 ### Backend
 ![Снимок экрана от 2024-04-25 18-21-40.png](https://github.com/omega1u123/task-tracker/blob/master/schema.png)
-Spring Boot (Java) application implementing a REST API for user management, sessions created upon authorization, and tasks.
+
 
 #### REST-SERVICE:
 
