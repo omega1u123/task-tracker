@@ -44,11 +44,12 @@ public class TaskEntity {
     @NotNull
     private BoardEntity board;
 
-    public TaskEntity(String title, String description, String status, Timestamp modified, BoardEntity board) {
+    public TaskEntity(String title, String description, String status, Timestamp modified, String modifiedBy,BoardEntity board) {
         this.title = title;
         this.description = description;
         this.status = status;
         this.modifiedAt = modified;
+        this.modifiedBy = modifiedBy;
         this.board = board;
     }
 

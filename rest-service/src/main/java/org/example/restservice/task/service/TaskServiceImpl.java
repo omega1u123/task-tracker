@@ -31,7 +31,7 @@ public class TaskServiceImpl implements TaskService{
                 task.getDescription(),
                 task.getStatus(),
                 Timestamp.valueOf(LocalDateTime.now()),
-
+                username,
                 boardRepo.findById(boardId).orElseThrow(EntityNotFoundException::new)
         );
         taskRepo.save(taskEntity);

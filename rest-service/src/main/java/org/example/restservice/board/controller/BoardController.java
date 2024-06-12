@@ -1,6 +1,5 @@
 package org.example.restservice.board.controller;
 
-
 import lombok.RequiredArgsConstructor;
 import org.example.restservice.board.controller.payload.NewBoardRequest;
 import org.example.restservice.board.service.BoardService;
