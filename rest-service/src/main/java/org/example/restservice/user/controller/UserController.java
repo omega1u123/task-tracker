@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import org.example.restservice.user.controller.payload.NewUserRequest;
 import org.example.restservice.user.exception.EntityNotFoundException;
 import org.example.restservice.user.model.UserEntity;
-import org.example.restservice.user.model.dto.UserDTO;
 import org.example.restservice.user.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
