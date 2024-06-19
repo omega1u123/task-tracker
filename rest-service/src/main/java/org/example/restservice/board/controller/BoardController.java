@@ -42,6 +42,8 @@ public class BoardController {
 
 
 
+
+
     @DeleteMapping("{boardId:\\d}")
     public ResponseEntity<?> deleteBoard(@PathVariable("boardId") int boardId){
         try {
