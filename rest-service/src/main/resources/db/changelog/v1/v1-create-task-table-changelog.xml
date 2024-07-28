@@ -3,7 +3,7 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
-   <changeSet id="v1-2" author="omegalul">
+   <changeSet id="v1-3" author="omegalul">
 
        <preConditions onFail="MARK_RAN">
            <not>
@@ -37,7 +37,7 @@
                <constraints nullable="false"/>
            </column>
 
-           <column name="c_board" type="integer">
+           <column name="c_board_id" type="integer">
                <constraints nullable="false"
                             foreignKeyName="c_board_id"
                             referencedTableName="t_board"

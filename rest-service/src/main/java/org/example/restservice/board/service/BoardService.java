@@ -12,9 +12,9 @@ public interface BoardService {
     List<BoardDTO> getBoardsByUserId(int userId);
     BoardDTO editBoardTitle(int boardId, String newTitle);
     void deleteBoard(int boardId);
-    BoardDTO addStatus(int boardId, String status);
-    BoardDTO deleteStatus(int boardId, String status);
-    BoardDTO editStatus(int boardId, String status, String newStatus);
+    BoardDTO addStatus(int boardId, String statusName);
+    BoardDTO deleteStatus(int boardId, String statusName);
+    BoardDTO editStatus(int boardId, String statusName, String newStatusName);
     BoardDTO addUserToBoard(int boardId, String username);
     BoardDTO deleteUserFromBoard(int boardId, String username);
 

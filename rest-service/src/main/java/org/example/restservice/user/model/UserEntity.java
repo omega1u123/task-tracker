@@ -13,6 +13,7 @@ import java.util.Set;
 @Table(name = "t_user")
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString(exclude = "boards")
 public class UserEntity {
 
     @Id

@@ -74,8 +74,8 @@ public class TaskServiceImpl implements TaskService{
     @Transactional
     public void editTask(int taskId, EditTaskRequest task) {
         TaskEntity taskEntity = taskRepo.findById(taskId).orElseThrow(TaskNotFoundException::new);
-        taskEntity.setTitle(task.getTitle());
-        taskEntity.setDescription(task.getDescription());
+        taskEntity.setTitle(task.title());
+        taskEntity.setDescription(task.description());
         taskEntity.setModifiedAt(Timestamp.valueOf(LocalDateTime.now()));
 
     }

@@ -3,23 +3,33 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
-    <changeSet id="v1-2" author="omegalul">
+    <changeSet id="v1-6" author="omegalul">
 
         <preConditions onFail="MARK_RAN">
             <not>
-                <tableExists tableName="t_board"/>
+                <tableExists tableName="t_status"/>
             </not>
         </preConditions>
 
-        <createTable tableName="t_board">
+        <createTable tableName="t_status">
 
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true"/>
             </column>
 
-            <column name="c_title" type="varchar">
-                <constraints nullable="false"/>
+            <column name="c_name" type="varchar">
+
             </column>
+
+            <column name="c_board_id" type="bigint">
+                <constraints nullable="false"
+                             foreignKeyName="c_board_id"
+                             referencedTableName="t_board"
+                             referencedColumnNames="id"
+                />
+            </column>
+
+
 
         </createTable>
     </changeSet>

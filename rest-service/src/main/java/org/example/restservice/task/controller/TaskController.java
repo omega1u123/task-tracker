@@ -33,7 +33,16 @@ public class TaskController {
     public ResponseEntity<?> createTask(@RequestBody NewTaskRequest task){
         try {
             log.info("task form request : {}", task.toString());
-            taskService.createTask(new CreateTaskModel(task.getTitle(), task.getDescription(), task.getStatus(), task.getBoardId()), task.getBoardId(), task.getUsername());
+            taskService.createTask(
+                    new CreateTaskModel(
+                            task.title(),
+                            task.description(),
+                            task.status(),
+                            task.boardId()
+                    ),
+                    task.boardId(),
+                    task.username()
+            );
             return ResponseEntity.ok("task created");
         }catch (EntityNotFoundException ex){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();

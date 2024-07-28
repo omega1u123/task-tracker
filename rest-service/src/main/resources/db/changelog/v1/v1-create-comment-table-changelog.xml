@@ -33,14 +33,6 @@
                 <constraints nullable="false"/>
             </column>
 
-            <column name="c_board" type="integer">
-                <constraints nullable="false"
-                             foreignKeyName="c_board_id"
-                             referencedTableName="t_board"
-                             referencedColumnNames="id"
-                />
-            </column>
-
         </createTable>
     </changeSet>
 

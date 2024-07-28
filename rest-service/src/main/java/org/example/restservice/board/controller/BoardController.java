@@ -2,6 +2,8 @@ package org.example.restservice.board.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.example.restservice.board.controller.payload.NewBoardRequest;
+import org.example.restservice.board.controller.payload.NewStatusPayload;
+import org.example.restservice.board.controller.payload.NewTitlePayload;
 import org.example.restservice.board.service.BoardService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,16 +27,16 @@ public class BoardController {
     @PostMapping
     public ResponseEntity<?> createBoard(@RequestBody NewBoardRequest boardRequest){
         try {
-            return ResponseEntity.ok(boardService.createBoard(boardRequest.getTitle(), boardRequest.getUserId()));
+            return ResponseEntity.ok(boardService.createBoard(boardRequest.title(), boardRequest.userId()));
         }catch (RuntimeException ex){
-            return ResponseEntity.badRequest().body("invalid input");
+            return ResponseEntity.badRequest().body(ex.getMessage());
         }
     }
 
     @PutMapping("{boardId:\\d}/changeTitle")
-    public ResponseEntity<?> editeTitle(@PathVariable("boardId") int boardId, @RequestBody String newTitle){
+    public ResponseEntity<?> editeTitle(@PathVariable("boardId") int boardId, @RequestBody NewTitlePayload newTitlePayload){
         try{
-            return ResponseEntity.ok(boardService.editBoardTitle(boardId, newTitle));
+            return ResponseEntity.ok(boardService.editBoardTitle(boardId, newTitlePayload.newTitle()));
         }catch (RuntimeException ex){
             return ResponseEntity.badRequest().build();
         }
@@ -52,11 +54,11 @@ public class BoardController {
     }
 
     @PostMapping("{boardId:\\d}/addStatus")
-    public ResponseEntity<?> addStatus(@PathVariable("boardId") int boardId, @RequestBody String status){
+    public ResponseEntity<?> addStatus(@PathVariable("boardId") int boardId, @RequestBody NewStatusPayload newStatusPayload){
         try{
-            return ResponseEntity.ok(boardService.addStatus(boardId, status));
+            return ResponseEntity.ok(boardService.addStatus(boardId, newStatusPayload.statusName()));
         }catch (RuntimeException ex){
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body(ex.getMessage());
         }
     }
 

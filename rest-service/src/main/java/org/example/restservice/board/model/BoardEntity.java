@@ -4,14 +4,14 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.example.restservice.task.model.TaskEntity;
 import org.example.restservice.user.model.UserEntity;
-import org.example.restservice.util.StringListConverter;
 
 import java.util.List;
-import java.util.Set;
 
 @Data
+@ToString(exclude = {"statuses", "users", "tasks"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -25,18 +25,21 @@ public class BoardEntity {
     @Column(name = "c_title")
     private String title;
 
-    @Column(name = "c_statuses")
-    @Convert(converter = StringListConverter.class)
-    private List<String> statuses;
+    @OneToMany(mappedBy = "board")
+    private List<StatusEntity> statuses;
 
     @ManyToMany
-    @Column(name = "c_users")
-    private Set<UserEntity> users;
+    @JoinTable(
+            name = "t_board_users",
+            joinColumns = @JoinColumn(name = "c_board_id"),
+            inverseJoinColumns = @JoinColumn(name = "c_user_id")
+    )
+    private List<UserEntity> users;
 
     @OneToMany(mappedBy = "board")
     private List<TaskEntity> tasks;
 
-    public BoardEntity(String title, List<String> statuses, Set<UserEntity> users) {
+    public BoardEntity(String title, List<StatusEntity> statuses, List<UserEntity> users) {
         this.title = title;
         this.statuses = statuses;
         this.users = users;

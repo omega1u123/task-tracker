@@ -3,6 +3,7 @@ package org.example.restservice.board.model.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.example.restservice.board.model.BoardEntity;
+import org.example.restservice.board.model.StatusEntity;
 import org.example.restservice.task.model.dto.TaskDTO;
 import org.example.restservice.user.model.dto.UserDTO;
 
@@ -22,13 +23,31 @@ public class BoardDTO {
 
     private List<TaskDTO> tasks;
 
-    public static BoardDTO mapEntityToDTO(BoardEntity entity){
+    public static BoardDTO mapEntityToDTO(BoardEntity board){
+        if(board.getTasks() == null){
+           return new BoardDTO(
+                    board.getId(),
+                    board.getTitle(),
+                    board.getStatuses().stream()
+                            .map(StatusEntity::getName)
+                            .toList(),
+                    board.getUsers().stream()
+                            .map(UserDTO::mapUserToDTO)
+                            .toList(),
+                    null
+            );
+        };
+
         return new BoardDTO(
-                entity.getId(), entity.getTitle(), entity.getStatuses(),
-                entity.getUsers().stream()
+                board.getId(),
+                board.getTitle(),
+                board.getStatuses().stream()
+                        .map(StatusEntity::getName)
+                        .toList(),
+                board.getUsers().stream()
                     .map(UserDTO::mapUserToDTO)
                     .toList(),
-                entity.getTasks().stream()
+                board.getTasks().stream()
                         .map(TaskDTO::mapTaskToDTO)
                         .toList()
         );
