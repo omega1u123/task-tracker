@@ -7,13 +7,23 @@ import org.example.restservice.comment.service.CommentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RestController("/task")
+@RestController
+@RequestMapping("comment/")
 @RequiredArgsConstructor
 public class CommentController {
 
     private final CommentService commentService;
 
-    @PostMapping("/{taskId:\\d}/comment/create")
+    @GetMapping("{taskId:\\d+}/getComments")
+    public ResponseEntity<?> getComments(@PathVariable int taskId){
+        try {
+            return ResponseEntity.ok(commentService.getComments(taskId));
+        }catch (RuntimeException ex){
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+    }
+
+    @PostMapping("create")
     public ResponseEntity<?> createComment(@RequestBody CreateCommentPayload createCommentPayload){
         try {
             return ResponseEntity.ok(commentService.addComment(
@@ -26,16 +36,7 @@ public class CommentController {
         }
     }
 
-    @GetMapping("/{taskId:\\d}/comment/getComments")
-    public ResponseEntity<?> getComments(@PathVariable int taskId){
-        try {
-            return ResponseEntity.ok(commentService.getComments(taskId));
-        }catch (RuntimeException ex){
-            return ResponseEntity.badRequest().body(ex.getMessage());
-        }
-    }
-
-    @PutMapping("/{taskId:\\d}/comment/{commentId:\\d}/editComment")
+    @PutMapping("{commentId:\\d}/editComment")
     public ResponseEntity<?> editComment(@PathVariable int commentId, @RequestBody EditCommentPayload editCommentPayload){
         try {
             return ResponseEntity.ok(commentService.editComment(commentId, editCommentPayload.text()));
@@ -44,7 +45,7 @@ public class CommentController {
         }
     }
 
-    @DeleteMapping("/{taskId:\\d}/comment/{commentId:\\d}/deleteComment")
+    @DeleteMapping("{commentId:\\d}/deleteComment")
     public ResponseEntity<?> deleteComment(@PathVariable int commentId){
         try {
             commentService.deleteComment(commentId);

@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.restservice.task.exception.TaskNotFoundException;
 import org.example.restservice.task.model.TaskEntity;
 import org.example.restservice.task.controller.payload.EditTaskRequest;
+import org.example.restservice.task.model.TaskMapper;
 import org.example.restservice.task.model.dto.AddCommentModel;
 import org.example.restservice.task.model.dto.CreateTaskModel;
 import org.example.restservice.task.model.dto.TaskDTO;
@@ -24,13 +25,14 @@ public class TaskServiceImpl implements TaskService{
 
     private final TaskRepo taskRepo;
     private final BoardRepo boardRepo;
+    private final TaskMapper taskMapper;
 
     @Override
     public void createTask(CreateTaskModel task, int boardId, String username) {
         TaskEntity taskEntity = new TaskEntity(
-                task.getTitle(),
-                task.getDescription(),
-                task.getStatus(),
+                task.title(),
+                task.description(),
+                task.status(),
                 Timestamp.valueOf(LocalDateTime.now()),
                 username,
                 boardRepo.findById(boardId).orElseThrow(EntityNotFoundException::new)
@@ -40,7 +42,7 @@ public class TaskServiceImpl implements TaskService{
 
     @Override
     public TaskDTO getTask(int taskId) {
-        return TaskDTO.mapTaskToDTO(taskRepo.findById(taskId).orElseThrow(TaskNotFoundException::new));
+        return taskMapper.mapTaskEntityToDto(taskRepo.findById(taskId).orElseThrow(TaskNotFoundException::new));
     }
 
     @Override

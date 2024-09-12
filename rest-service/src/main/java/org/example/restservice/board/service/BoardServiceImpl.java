@@ -2,7 +2,15 @@ package org.example.restservice.board.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.restservice.board.exception.board.BoardNotCreatedException;
+import org.example.restservice.board.exception.board.BoardNotDeletedException;
+import org.example.restservice.board.exception.board.BoardNotFoundException;
+import org.example.restservice.board.exception.board.BoardTitleNotEditedException;
+import org.example.restservice.board.exception.status.StatusNotCreatedException;
+import org.example.restservice.board.exception.status.StatusNotDeletedException;
+import org.example.restservice.board.exception.status.StatusNotEditedException;
 import org.example.restservice.board.model.BoardEntity;
+import org.example.restservice.board.model.BoardMapper;
 import org.example.restservice.board.model.StatusEntity;
 import org.example.restservice.board.model.dto.BoardDTO;
 import org.example.restservice.board.repository.BoardRepo;
@@ -23,6 +31,7 @@ public class BoardServiceImpl implements BoardService{
     private final UserRepo userRepo;
     private final BoardRepo boardRepo;
     private final StatusRepo statusRepo;
+    private final BoardMapper boardMapper;
 
     private final List<StatusEntity> defaultStatuses = List.of(
             new StatusEntity("to do"),
@@ -32,6 +41,7 @@ public class BoardServiceImpl implements BoardService{
 
     @Override
     public BoardDTO createBoard(String title, int userId) {
+
         List<UserEntity> user = Collections.singletonList(userRepo.findUserEntityById(userId));
 
         var board = new BoardEntity(
@@ -41,24 +51,26 @@ public class BoardServiceImpl implements BoardService{
         );
 
         log.info("created board: {}", board);
-
-        boardRepo.save(board);
-        statusRepo.saveAll(defaultStatuses.stream()
-                .peek(s -> s.setBoard(board))
-                .toList());
-
-        return BoardDTO.mapEntityToDTO(board);
+        try {
+            boardRepo.save(board);
+            statusRepo.saveAll(defaultStatuses.stream()
+                    .peek(s -> s.setBoard(board))
+                    .toList());
+        }catch (RuntimeException e){
+            throw new BoardNotCreatedException();
+        }
+        return boardMapper.mapEntityToDTO(board);
     }
 
     @Override
     public BoardDTO getBoard(int boardId) {
-        return BoardDTO.mapEntityToDTO(boardRepo.findById(boardId).orElseThrow(EntityNotFoundException::new));
+        return boardMapper.mapEntityToDTO(boardRepo.findById(boardId).orElseThrow(BoardNotFoundException::new));
     }
 
     @Override
     public List<BoardDTO> getBoardsByUserId(int userId) {
         return List.of(
-                BoardDTO.mapEntityToDTO(
+                boardMapper.mapEntityToDTO(
                         boardRepo.findBoardEntitiesByUsers(
                                 userRepo.findUserEntityById(userId)
                         ).iterator().next()
@@ -69,28 +81,38 @@ public class BoardServiceImpl implements BoardService{
     @Override
     @Transactional
     public BoardDTO editBoardTitle(int boardId, String newTitle) {
-        var board = boardRepo.findById(boardId).orElseThrow(EntityNotFoundException::new);
+        var board = boardRepo.findById(boardId).orElseThrow(BoardNotFoundException::new);
         board.setTitle(newTitle);
-        boardRepo.save(board);
-        return BoardDTO.mapEntityToDTO(board);
+        try {
+            boardRepo.save(board);
+        }catch (RuntimeException e){
+            throw new BoardTitleNotEditedException();
+        }
+        return boardMapper.mapEntityToDTO(board);
     }
 
     @Override
     public void deleteBoard(int boardId) {
-        boardRepo.deleteById(boardId);
+        try {
+            boardRepo.deleteById(boardId);
+        }catch (RuntimeException e){
+            throw new BoardNotDeletedException();
+        }
     }
 
     @Override
     @Transactional
     public BoardDTO addStatus(int boardId, String statusName) {
         log.info("statusName: {}", statusName);
-        var board = boardRepo.findById(boardId).orElseThrow(EntityNotFoundException::new);
-        /*board.getStatuses().add(new StatusEntity(status));
-        boardRepo.save(board);*/
+        var board = boardRepo.findById(boardId).orElseThrow(BoardNotFoundException::new);
         var status = new StatusEntity(statusName, board);
-        statusRepo.save(status);
+        try {
+            statusRepo.save(status);
+        }catch (RuntimeException e){
+            throw new StatusNotCreatedException();
+        }
         board.getStatuses().add(status);
-        return BoardDTO.mapEntityToDTO(board);
+        return boardMapper.mapEntityToDTO(board);
     }
 
     @Override
@@ -99,8 +121,12 @@ public class BoardServiceImpl implements BoardService{
         var board = boardRepo.findById(boardId).orElseThrow(EntityNotFoundException::new);
         var status = statusRepo.findByBoardAndName(board, statusName);
         board.getStatuses().remove(status);
-        statusRepo.delete(status);
-        return BoardDTO.mapEntityToDTO(board);
+        try {
+            statusRepo.delete(status);
+        }catch (RuntimeException e){
+            throw new StatusNotDeletedException();
+        }
+        return boardMapper.mapEntityToDTO(board);
     }
 
     @Override
@@ -109,8 +135,12 @@ public class BoardServiceImpl implements BoardService{
         var board = boardRepo.findById(boardID).orElseThrow(EntityNotFoundException::new);
         int index = board.getStatuses().indexOf(new StatusEntity(status));
         board.getStatuses().set(index, new StatusEntity(newStatusName));
-        boardRepo.save(board);
-        return BoardDTO.mapEntityToDTO(board);
+        try {
+            boardRepo.save(board);
+        }catch (RuntimeException e){
+            throw new StatusNotEditedException();
+        }
+        return boardMapper.mapEntityToDTO(board);
     }
 
     @Override
@@ -119,7 +149,7 @@ public class BoardServiceImpl implements BoardService{
         var board = boardRepo.findById(boardId).orElseThrow(EntityNotFoundException::new);
         board.getUsers().add(userRepo.findUserEntityByUsername(username));
         boardRepo.save(board);
-        return BoardDTO.mapEntityToDTO(board);
+        return boardMapper.mapEntityToDTO(board);
     }
 
     @Override
@@ -128,7 +158,7 @@ public class BoardServiceImpl implements BoardService{
         var board = boardRepo.findById(boardId).orElseThrow(EntityNotFoundException::new);
         board.getUsers().remove(userRepo.findUserEntityByUsername(username));
         boardRepo.save(board);
-        return BoardDTO.mapEntityToDTO(board);
+        return boardMapper.mapEntityToDTO(board);
     }
 
 

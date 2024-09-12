@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.restservice.board.controller.payload.NewBoardRequest;
 import org.example.restservice.board.controller.payload.NewStatusPayload;
 import org.example.restservice.board.controller.payload.NewTitlePayload;
+import org.example.restservice.board.model.dto.BoardDTO;
 import org.example.restservice.board.service.BoardService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,68 +17,40 @@ public class BoardController {
     private final BoardService boardService;
 
     @GetMapping("{boardId:\\d}")
-    public ResponseEntity<?> getBoard(@PathVariable("boardId") int boardId){
-        try{
-            return ResponseEntity.ok(boardService.getBoard(boardId));
-        }catch (RuntimeException ex){
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<BoardDTO> getBoard(@PathVariable("boardId") int boardId){
+        return ResponseEntity.ok(boardService.getBoard(boardId));
     }
 
     @PostMapping
-    public ResponseEntity<?> createBoard(@RequestBody NewBoardRequest boardRequest){
-        try {
-            return ResponseEntity.ok(boardService.createBoard(boardRequest.title(), boardRequest.userId()));
-        }catch (RuntimeException ex){
-            return ResponseEntity.badRequest().body(ex.getMessage());
-        }
+    public ResponseEntity<BoardDTO> createBoard(@RequestBody NewBoardRequest boardRequest){
+        return ResponseEntity.ok(boardService.createBoard(boardRequest.title(), boardRequest.userId()));
     }
 
     @PutMapping("{boardId:\\d}/changeTitle")
-    public ResponseEntity<?> editeTitle(@PathVariable("boardId") int boardId, @RequestBody NewTitlePayload newTitlePayload){
-        try{
-            return ResponseEntity.ok(boardService.editBoardTitle(boardId, newTitlePayload.newTitle()));
-        }catch (RuntimeException ex){
-            return ResponseEntity.badRequest().build();
-        }
+    public ResponseEntity<BoardDTO> editeTitle(@PathVariable("boardId") int boardId, @RequestBody NewTitlePayload newTitlePayload){
+        return ResponseEntity.ok(boardService.editBoardTitle(boardId, newTitlePayload.newTitle()));
     }
 
 
     @DeleteMapping("{boardId:\\d}")
-    public ResponseEntity<?> deleteBoard(@PathVariable("boardId") int boardId){
-        try {
-            boardService.deleteBoard(boardId);
-            return ResponseEntity.ok("board deleted");
-        }catch (RuntimeException ex){
-            return ResponseEntity.badRequest().build();
-        }
+    public ResponseEntity<String> deleteBoard(@PathVariable("boardId") int boardId){
+        boardService.deleteBoard(boardId);
+        return ResponseEntity.ok("board deleted");
     }
 
     @PostMapping("{boardId:\\d}/addStatus")
-    public ResponseEntity<?> addStatus(@PathVariable("boardId") int boardId, @RequestBody NewStatusPayload newStatusPayload){
-        try{
-            return ResponseEntity.ok(boardService.addStatus(boardId, newStatusPayload.statusName()));
-        }catch (RuntimeException ex){
-            return ResponseEntity.badRequest().body(ex.getMessage());
-        }
+    public ResponseEntity<BoardDTO> addStatus(@PathVariable("boardId") int boardId, @RequestBody NewStatusPayload newStatusPayload){
+        return ResponseEntity.ok(boardService.addStatus(boardId, newStatusPayload.statusName()));
     }
 
     @DeleteMapping("{boardId:\\d}/deleteStatus")
-    public ResponseEntity<?> deleteStatus(@PathVariable("boardId") int boardId, @RequestBody String status){
-        try {
-            return ResponseEntity.ok(boardService.deleteStatus(boardId, status));
-        }catch (RuntimeException ex){
-            return ResponseEntity.badRequest().build();
-        }
+    public ResponseEntity<BoardDTO> deleteStatus(@PathVariable("boardId") int boardId, @RequestBody String status){
+        return ResponseEntity.ok(boardService.deleteStatus(boardId, status));
     }
 
     @PutMapping("{boardId:\\d}/editStatus")
-    public ResponseEntity<?> editStatus(@PathVariable("boardId") int boardId, @RequestBody String status, @RequestBody String newStatus){
-        try {
-            return ResponseEntity.ok(boardService.editStatus(boardId, status, newStatus));
-        }catch (RuntimeException ex){
-            return ResponseEntity.badRequest().build();
-        }
+    public ResponseEntity<BoardDTO> editStatus(@PathVariable("boardId") int boardId, @RequestBody String status, @RequestBody String newStatus){
+        return ResponseEntity.ok(boardService.editStatus(boardId, status, newStatus));
     }
 
     @PutMapping("{boardId:\\d}/addUser")

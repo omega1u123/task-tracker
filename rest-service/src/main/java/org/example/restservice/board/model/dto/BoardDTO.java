@@ -1,56 +1,21 @@
 package org.example.restservice.board.model.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import org.example.restservice.board.model.BoardEntity;
-import org.example.restservice.board.model.StatusEntity;
 import org.example.restservice.task.model.dto.TaskDTO;
 import org.example.restservice.user.model.dto.UserDTO;
 
 import java.util.List;
 
-@Data
-@AllArgsConstructor
-public class BoardDTO {
 
-    private int id;
+public record BoardDTO(
 
-    private String title;
+        int id,
 
-    private List<String> statuses;
+        String title,
 
-    private List<UserDTO> users;
+        List<String> statuses,
 
-    private List<TaskDTO> tasks;
+        List<UserDTO> users,
 
-    public static BoardDTO mapEntityToDTO(BoardEntity board){
-        if(board.getTasks() == null){
-           return new BoardDTO(
-                    board.getId(),
-                    board.getTitle(),
-                    board.getStatuses().stream()
-                            .map(StatusEntity::getName)
-                            .toList(),
-                    board.getUsers().stream()
-                            .map(UserDTO::mapUserToDTO)
-                            .toList(),
-                    null
-            );
-        };
-
-        return new BoardDTO(
-                board.getId(),
-                board.getTitle(),
-                board.getStatuses().stream()
-                        .map(StatusEntity::getName)
-                        .toList(),
-                board.getUsers().stream()
-                    .map(UserDTO::mapUserToDTO)
-                    .toList(),
-                board.getTasks().stream()
-                        .map(TaskDTO::mapTaskToDTO)
-                        .toList()
-        );
-    }
-
+        List<TaskDTO> tasks
+) {
 }
