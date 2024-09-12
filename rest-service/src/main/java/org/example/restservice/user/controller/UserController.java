@@ -2,7 +2,7 @@ package org.example.restservice.user.controller;
 
 import lombok.AllArgsConstructor;
 import org.example.restservice.user.controller.payload.NewUserRequest;
-import org.example.restservice.user.exception.EntityNotFoundException;
+import org.example.restservice.user.exception.UserNotFoundException;
 import org.example.restservice.user.model.UserEntity;
 import org.example.restservice.user.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -21,7 +21,7 @@ public class UserController {
     public ResponseEntity<?> getUser(@PathVariable("userId") int id){
         try{
            return ResponseEntity.ok().body(userService.getUser(id));
-        }catch (EntityNotFoundException ex){
+        }catch (UserNotFoundException ex){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }

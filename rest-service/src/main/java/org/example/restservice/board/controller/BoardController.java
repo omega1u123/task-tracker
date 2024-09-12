@@ -55,20 +55,12 @@ public class BoardController {
 
     @PutMapping("{boardId:\\d}/addUser")
     public ResponseEntity<?> addUser(@PathVariable("boardId") int boardId, @RequestBody String username){
-        try{
-            return ResponseEntity.ok(boardService.addUserToBoard(boardId, username));
-        }catch (RuntimeException ex){
-            return ResponseEntity.badRequest().build();
-        }
+        return ResponseEntity.ok(boardService.addUserToBoard(boardId, username));
     }
 
     @PutMapping("{boardId:\\d}/deleteUser")
     public ResponseEntity<?> deleteUser(@PathVariable("boardId") int boardId, @RequestBody String username){
-        try{
-            return ResponseEntity.ok(boardService.deleteUserFromBoard(boardId, username));
-        }catch (RuntimeException ex){
-            return ResponseEntity.badRequest().build();
-        }
+        return ResponseEntity.ok(boardService.deleteUserFromBoard(boardId, username));
     }
 
 }

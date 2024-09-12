@@ -31,12 +31,14 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
                 .authorizeRequests(auth -> auth
-                        .requestMatchers("/auth/**").permitAll()
+                        /*.requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/task/**").authenticated()
                         .requestMatchers("/comment/**").authenticated()
                         .requestMatchers("/board/**").authenticated()
                         .requestMatchers("/user/**").authenticated()
-                        .anyRequest().authenticated())
+                        .anyRequest().authenticated()*/
+                        .anyRequest().permitAll()
+                )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtSecurityFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();

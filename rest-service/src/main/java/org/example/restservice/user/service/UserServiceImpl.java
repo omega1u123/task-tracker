@@ -4,9 +4,7 @@ import lombok.AllArgsConstructor;
 import org.example.restservice.board.model.dto.BoardDTO;
 import org.example.restservice.board.repository.BoardRepo;
 import org.example.restservice.board.service.BoardService;
-import org.example.restservice.task.model.dto.TaskDTO;
-import org.example.restservice.task.repository.TaskRepo;
-import org.example.restservice.user.exception.EntityNotFoundException;
+import org.example.restservice.user.exception.UserNotFoundException;
 import org.example.restservice.user.model.UserEntity;
 import org.example.restservice.user.model.dto.UserDTO;
 import org.example.restservice.user.repository.UserRepo;
@@ -27,7 +25,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public UserDTO getUser(int id) {
-        return UserDTO.mapUserToDTO(userRepo.findById(id).orElseThrow(EntityNotFoundException::new));
+        return UserDTO.mapUserToDTO(userRepo.findById(id).orElseThrow(UserNotFoundException::new));
     }
 
     @Override

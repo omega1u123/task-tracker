@@ -1,13 +1,10 @@
 package org.example.restservice.board.controller;
 
-import org.example.restservice.board.exception.board.BoardNotCreatedException;
-import org.example.restservice.board.exception.board.BoardNotDeletedException;
-import org.example.restservice.board.exception.board.BoardNotFoundException;
-import org.example.restservice.board.exception.board.BoardTitleNotEditedException;
+import org.example.restservice.board.exception.board.*;
 import org.example.restservice.board.exception.status.StatusNotCreatedException;
 import org.example.restservice.board.exception.status.StatusNotDeletedException;
 import org.example.restservice.board.exception.status.StatusNotEditedException;
-import org.example.restservice.user.exception.EntityNotFoundException;
+import org.example.restservice.user.exception.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -17,7 +14,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class BoardControllerExceptionHandler {
 
     @ExceptionHandler(BoardNotFoundException.class)
-    public ResponseEntity<String> boardNotFoundHandler(EntityNotFoundException e){
+    public ResponseEntity<String> boardNotFoundHandler(UserNotFoundException e){
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(e.getMessage());
     }
@@ -54,6 +51,12 @@ public class BoardControllerExceptionHandler {
 
     @ExceptionHandler(StatusNotEditedException.class)
     public ResponseEntity<String> statusNotEditedHandler(StatusNotEditedException e){
+        return ResponseEntity.status(HttpStatus.BAD_GATEWAY)
+                .body(e.getMessage());
+    }
+
+    @ExceptionHandler(UserNotAddedToBoardException.class)
+    public ResponseEntity<String> userNotAddedToBoardHandler(UserNotAddedToBoardException e){
         return ResponseEntity.status(HttpStatus.BAD_GATEWAY)
                 .body(e.getMessage());
     }

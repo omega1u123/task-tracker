@@ -6,8 +6,9 @@ import org.example.restservice.task.exception.TaskNotFoundException;
 import org.example.restservice.task.controller.payload.EditTaskRequest;
 import org.example.restservice.task.controller.payload.NewTaskRequest;
 import org.example.restservice.task.model.dto.CreateTaskModel;
+import org.example.restservice.task.model.dto.TaskDTO;
 import org.example.restservice.task.service.TaskService;
-import org.example.restservice.user.exception.EntityNotFoundException;
+import org.example.restservice.user.exception.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,17 +23,12 @@ public class TaskController {
 
     @GetMapping("{taskId:\\d+}")
     public ResponseEntity<?> getTask(@PathVariable("taskId") int taskId){
-        try{
-            return ResponseEntity.ok(taskService.getTask(taskId));
-        }catch (TaskNotFoundException ex){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("task ne naiden");
-        }
+        return ResponseEntity.ok(taskService.getTask(taskId));
     }
 
     @PostMapping("create")
-    public ResponseEntity<?> createTask(@RequestBody NewTaskRequest task){
-        try {
-            log.info("task form request : {}", task.toString());
+    public ResponseEntity<String> createTask(@RequestBody NewTaskRequest task){
+        log.info("task form request : {}", task.toString());
             taskService.createTask(
                     new CreateTaskModel(
                             task.title(),
@@ -44,60 +40,34 @@ public class TaskController {
                     task.username()
             );
             return ResponseEntity.ok("task created");
-        }catch (EntityNotFoundException ex){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
     }
 
     @PatchMapping("{taskId:\\d+}/changeStatusToCompleted")
-    public ResponseEntity<?> changeStatusToCompleted(@PathVariable("taskId") int taskId){
-        try{
-            taskService.changeStatusToCompleted(taskId);
-            return ResponseEntity.ok().build();
-        }catch (TaskNotFoundException e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("task not found");
-        }
+    public ResponseEntity<TaskDTO> changeStatusToCompleted(@PathVariable("taskId") int taskId){
+        return ResponseEntity.ok(taskService.changeStatusToCompleted(taskId));
     }
 
     @PatchMapping("{taskId:\\d+}/changeStatusToToDo")
-    public ResponseEntity<?> changeStatusToToDo(@PathVariable("taskId") int taskId){
-        try{
-            taskService.changeStatusToToDo(taskId);
-            return ResponseEntity.ok().build();
-        }catch (TaskNotFoundException e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("task not found");
-        }
+    public ResponseEntity<TaskDTO> changeStatusToToDo(@PathVariable("taskId") int taskId){
+        return ResponseEntity.ok( taskService.changeStatusToToDo(taskId));
     }
 
     @PatchMapping("{taskId:\\d+}/changeStatusToInProgress")
-    public ResponseEntity<?> changeStatusToInProgress(@PathVariable("taskId") int taskId){
-        try{
-            taskService.changeStatusToInProgress(taskId);
-            return ResponseEntity.ok().build();
-        }catch (TaskNotFoundException e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("task not found");
-        }
+    public ResponseEntity<TaskDTO> changeStatusToInProgress(@PathVariable("taskId") int taskId){
+        return ResponseEntity.ok(taskService.changeStatusToInProgress(taskId));
     }
 
     @PutMapping("{taskId:\\d+}/editTask")
-    public ResponseEntity<?> editTask(@PathVariable("taskId") int taskId,@RequestBody EditTaskRequest task){
-        try {
-            log.info(task.toString());
-            taskService.editTask(taskId, task);
-            return ResponseEntity.ok().build();
-        }catch (TaskNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("task not found");
-        }
+    public ResponseEntity<TaskDTO> editTask(@PathVariable("taskId") int taskId,@RequestBody EditTaskRequest task){
+        log.info(task.toString());
+        taskService.editTask(taskId, task);
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("{taskId:\\d+}/deleteTask")
     public ResponseEntity<?> deleteTask(@PathVariable("taskId") int taskId){
-        try{
-            taskService.deleteTask(taskId);
-            return ResponseEntity.ok().body("task deleted");
-        }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("smt went wrong...");
-        }
+        taskService.deleteTask(taskId);
+        return ResponseEntity.ok().body("task deleted");
     }
 
 }

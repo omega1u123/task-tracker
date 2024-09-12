@@ -2,10 +2,7 @@ package org.example.restservice.board.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.restservice.board.exception.board.BoardNotCreatedException;
-import org.example.restservice.board.exception.board.BoardNotDeletedException;
-import org.example.restservice.board.exception.board.BoardNotFoundException;
-import org.example.restservice.board.exception.board.BoardTitleNotEditedException;
+import org.example.restservice.board.exception.board.*;
 import org.example.restservice.board.exception.status.StatusNotCreatedException;
 import org.example.restservice.board.exception.status.StatusNotDeletedException;
 import org.example.restservice.board.exception.status.StatusNotEditedException;
@@ -15,7 +12,7 @@ import org.example.restservice.board.model.StatusEntity;
 import org.example.restservice.board.model.dto.BoardDTO;
 import org.example.restservice.board.repository.BoardRepo;
 import org.example.restservice.board.repository.StatusRepo;
-import org.example.restservice.user.exception.EntityNotFoundException;
+import org.example.restservice.user.exception.UserNotFoundException;
 import org.example.restservice.user.model.UserEntity;
 import org.example.restservice.user.repository.UserRepo;
 import org.springframework.stereotype.Service;
@@ -41,15 +38,12 @@ public class BoardServiceImpl implements BoardService{
 
     @Override
     public BoardDTO createBoard(String title, int userId) {
-
         List<UserEntity> user = Collections.singletonList(userRepo.findUserEntityById(userId));
-
         var board = new BoardEntity(
                 title,
                 defaultStatuses,
                 user
         );
-
         log.info("created board: {}", board);
         try {
             boardRepo.save(board);
@@ -118,7 +112,7 @@ public class BoardServiceImpl implements BoardService{
     @Override
     @Transactional
     public BoardDTO deleteStatus(int boardId, String statusName) {
-        var board = boardRepo.findById(boardId).orElseThrow(EntityNotFoundException::new);
+        var board = boardRepo.findById(boardId).orElseThrow(UserNotFoundException::new);
         var status = statusRepo.findByBoardAndName(board, statusName);
         board.getStatuses().remove(status);
         try {
@@ -132,7 +126,7 @@ public class BoardServiceImpl implements BoardService{
     @Override
     @Transactional
     public BoardDTO editStatus(int boardID, String status, String newStatusName) {
-        var board = boardRepo.findById(boardID).orElseThrow(EntityNotFoundException::new);
+        var board = boardRepo.findById(boardID).orElseThrow(UserNotFoundException::new);
         int index = board.getStatuses().indexOf(new StatusEntity(status));
         board.getStatuses().set(index, new StatusEntity(newStatusName));
         try {
@@ -146,18 +140,28 @@ public class BoardServiceImpl implements BoardService{
     @Override
     @Transactional
     public BoardDTO addUserToBoard(int boardId, String username) {
-        var board = boardRepo.findById(boardId).orElseThrow(EntityNotFoundException::new);
-        board.getUsers().add(userRepo.findUserEntityByUsername(username));
-        boardRepo.save(board);
+        var board = boardRepo.findById(boardId).orElseThrow(BoardNotFoundException::new);
+        var user = userRepo.findByUsername(username).orElseThrow(UserNotFoundException::new);
+        board.getUsers().add(user);
+        try {
+            boardRepo.save(board);
+        }catch (RuntimeException e){
+            throw new UserNotAddedToBoardException();
+        }
         return boardMapper.mapEntityToDTO(board);
     }
 
     @Override
     @Transactional
     public BoardDTO deleteUserFromBoard(int boardId, String username) {
-        var board = boardRepo.findById(boardId).orElseThrow(EntityNotFoundException::new);
-        board.getUsers().remove(userRepo.findUserEntityByUsername(username));
-        boardRepo.save(board);
+        var board = boardRepo.findById(boardId).orElseThrow(BoardNotFoundException::new);
+        var user = userRepo.findByUsername(username).orElseThrow(UserNotFoundException::new);
+        board.getUsers().remove(user);
+        try {
+            boardRepo.save(board);
+        }catch (RuntimeException e){
+            throw new UserNotDeletedFromBoardException();
+        }
         return boardMapper.mapEntityToDTO(board);
     }
 
